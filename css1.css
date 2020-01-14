@@ -125,3 +125,13 @@ span{
 .clickable{
 	cursor: pointer;
 }
+
+.hideWord{
+	display: inline;
+	color: darkgray;
+}
+
+.hideWord:hover{
+	display: inline;
+	color: black;
+}
