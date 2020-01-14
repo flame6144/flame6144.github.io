@@ -1,8 +1,1279 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<body>
-<div>sdsae</div>
-<div>sdsa22e</div>
-</body>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- Other -->
+<!-- 一般情况下这些都是链接的，复制过来只是为了方便直接打开html文件-->
+<style>
+@charset "utf-8";
+/* CSS Document */
+
+.imgWidthFit img{
+	margin: 5px;
+	width: 100%;
+}
+.imgHeightFit img{
+	margin: 5px;
+	height: 100%;
+}
+
+span{
+	cursor: default;	
+}
+
+.blockSpan span{
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.blockSpan.blockHide span,
+.blockSpan.blockHide .hideElement{
+	display: none;
+}
+
+.blockSpan.blockHide span.alwaysVis,
+.blockSpan.blockHide .hideElement.alwaysVis{
+	display: inline-block;
+}
+
+.blockSpan.blockHide span.reverseVis,
+.blockSpan.blockHide .hideElement.reverseVis{
+	display: inline-block;
+}
+
+.blockSpan span.reverseVis,
+.blockSpan .hideElement.reverseVis{
+	display: none;
+}
+
+.skillFrom .pre-scrollable::-webkit-scrollbar {
+	width: 0px;
+}
+
+.skillBar{
+	margin-bottom: 20px;
+}
+
+.skillBar .progress{
+	margin-bottom: 0px;
+	cursor:pointer;
+}
+
+.tdHead{
+	white-space:nowrap;
+}
+
+.tips{
+	margin: 5px;
+}
+
+.inner{
+	margin: 10px;
+}
+
+.basicInform .headTips{
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.basicInform .info{
+	display: inline-block;
+	font-family: '微软雅黑';
+	font-size: 18px;
+	white-space: nowrap;
+	line-height: 18px;
+}
+
+.basicInform span{
+	font-size: 18px;
+	display: inline-block;
+	margin-top: 0px;
+}
+
+.videoFull {
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+}
+.videoFull iframe,
+.videoFull object,
+.videoFull embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.hoverDelete:empty{
+	text-decoration-line: none;
+}
+.hoverDelete:hover{
+	text-decoration-line: line-through;
+}
+
+.hideSide .carousel-control.left {
+  
+  background-image:none;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+}
+
+.hideSide .carousel-control.right {
+  left: auto;
+  right: 0;
+ 
+  background-image:none;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
+}
+
+.clickable{
+	cursor: pointer;
+}
+</style>
+
+<script type="text/javascript">
+//给span添加额外的classname
+//ExtraClass为额外添加的classname，注意加入空格
+function SpanStyle(ExtraClass){
+	"use strict";
+	var spans = document.currentScript.parentElement.getElementsByTagName("span"); 
+	for(var i=0;i<spans.length;++i){ 
+		spans[i].className+=ExtraClass;
+	}
+}
+
+//关联script父对象内所有panel-heading与panel-body,添加折叠功能
+//PreName为id名前缀，BeginingIDNum为开始赋值的编号起始，collapsing表示初始折叠
+function SetCollapseID(PreName,BeginingIDNum,collapsing){
+	"use strict";
+	if(BeginingIDNum.constructor === Number){
+		var idName = "";
+		var childs = document.currentScript.parentElement.getElementsByTagName("div");
+		for(var j=0;j<childs.length;++j){
+			if(childs[j].className.indexOf("panel-heading")!==-1){
+				idName = PreName+ ++BeginingIDNum;
+				childs[j].setAttribute("data-toggle","collapse");
+				childs[j].setAttribute("data-target","#"+idName);
+			}
+			else if(childs[j].className.indexOf("panel-body")!==-1){
+				childs[j].id = idName;
+				if(collapsing){
+					childs[j].className += " panel-collapse collapse";					
+				}
+				else{
+					childs[j].className += " panel-collapse collapse in";					
+				}
+			}
+		}
+	}	
+}
+
+//检测id为idName的element最后一个松开的按键是否为code，如果是，执行callBack
+function KeyUpTest(idName,code,callBack) {
+	"use strict";
+	if(event.keyCode===code){
+		callBack();
+	}
+}
+
+//复制id为idName的element的value
+function Copy(idName) {
+	"use strict";
+	var content = document.getElementById(idName);
+	content.select();
+	document.execCommand('Copy');
+	alert('复制成功');
+}
+
+var wordPre = "word";
+var wordNum = 1;
+
+//返回一个方便进入百度盘以及显示提取码的div，src为分享地址,password为分享码，className为生成div的类名
+function Pan(src,password,className){
+	"use strict";
+	var idName = wordPre+ ++wordNum;
+	var Out = document.createElement("div");
+	Out.className = className;
+	var element = document.createElement("button");
+	element.className = "btn btn-primary";
+	element.style = "display: inline-block;";
+	element.setAttribute("onclick","location.href='"+src+"'");
+	element.textContent = "百度网盘";
+	Out.appendChild(element);
+	//生成框组
+	var inputGroup = document.createElement("div");
+	inputGroup.className = "input-group";
+	inputGroup.style = "display: inline-block;width: 120px;";
+	//生成输入框
+	element = document.createElement("input");
+	element.id = idName;
+	element.className = "form-control";
+	element.style = "display: inline;width: 60px";
+	element.setAttribute("readOnly", true); 
+	element.setAttribute("data-html", true); 
+	element.setAttribute("value", password); 
+	element.setAttribute("onKeyUp", "KeyUpTest('"+idName+"',13,function(){Copy('"+idName+"');})"); 
+	element.setAttribute("data-toggle", "tooltip"); 
+	element.title="按下Enter键复制提取码<br>如果有Enter键的话"; 
+	inputGroup.appendChild(element);
+	//生成后方粘连的标签
+	var span = document.createElement("span");
+	span.className = "input-group-btn";	
+	span.style = "display: inline;";
+	//按钮
+	element = document.createElement("button");
+	element.className = "btn btn-default";
+	element.setAttribute("onClick", "Copy('"+idName+"')"); 
+	element.textContent = "复制";
+	//组装
+	span.appendChild(element);
+	inputGroup.appendChild(span);
+	//再套一层
+	element = document.createElement("div");
+	element.style = "display: inline-block;width: 200px;white-space:nowrap; margin: 5px;";
+	element.innerHTML="提取码：";
+	element.appendChild(inputGroup);
+	//组装
+	Out.appendChild(element);
+	//加入到指定位置
+	return Out;
+	/*
+		<button class="btn btn-primary" onClick="location.href='https://pan.baidu.com/s/15ylGShsQ9eSwMrdZIqrH1g'">百度网盘</button>
+		提取码：
+		<input id="word1" class="form-control" style="display: inline;width: 80px" readonly value="0bo6" onKeyUp="KeyUpTest('word1',13,function(){Copy('word1');})" data-toggle="tooltip" title="按下Enter键复制提取码">
+	*/
+}
+
+//在代码执行的位置添加一个带提取码的百度盘组，src为分享地址,password为分享码，className为生成div的类名
+function AddPan(src,password,className){
+	"use strict";
+	document.currentScript.parentElement.appendChild(Pan(src,password,className));
+}
+
+//在id名为pointId的对象下方插入一个带提取码的百度盘，src为分享地址,password为分享码，className为生成div的类名
+function PointPan(pointId,src,password,className){
+	"use strict";
+	document.getElementById(pointId).appendChild(Pan(src,password,className));
+}
+
+//为id为idName的对象添加class（记得加空格）
+function AddClass(idName,className){
+	"use strict";
+	document.getElementById(idName).className+=className;
+}
+
+//如果id为idName的对象无className属性则添加className，否则删去（别加空格）
+function SwitchClass(idName,className){
+	"use strict";
+	var element = document.getElementById(idName);
+	if(element.className.indexOf(className)!==-1){
+		element.classList.remove(className);
+	}
+	else{
+		element.className+=" "+className;
+	}
+}
+
+//是否为手机端
+var isPhone;
+
+//执行判断语句
+function PhoneTest(){
+	"use strict";
+   var sUserAgent = navigator.userAgent.toLowerCase();
+   isPhone = /ipad|iphone|midp|rv:1.2.3.4|ucweb|android|windows ce|windows mobile/.test(sUserAgent);
+}
+
+//放大图片的弹出框的id
+var modalIdRecord;
+//放大图片的弹出框内显示大图的Img
+var modalImg;
+//大图的标题
+var modalTitle;
+
+//设置放大图片的弹出框的ID名
+function SetModalID(modalId,modalImgId,modalTitleId){
+	"use strict";
+	modalIdRecord = modalId;
+	modalImg = document.getElementById(modalImgId);
+	modalTitle = document.getElementById(modalTitleId);
+}
+
+//某些添加元素的函数进行操作的点
+var point;
+
+//在id名为pointId的对象下方插入一个带提取码的百度盘，src为分享地址,password为分享码，className为生成div的类名
+function LocatePoint(pointId){
+	"use strict";
+	point = document.getElementById(pointId);
+}
+
+//在point元素内加入图片与标题的轮播项，图片sro为imgSrc，图片描述w为title，为active则图片显示
+function AddModalImgItem(imgSrc,title,active){
+	"use strict";
+	var item = document.createElement("div");
+	item.className = active?"item active":"item";
+	var img = document.createElement("img");
+	img.setAttribute("src",imgSrc);
+	img.className = "clickable";
+	ModalShow(img,imgSrc,title);
+	var inform = document.createElement("div");
+	inform.className = "carousel-caption";
+	inform.innerHTML = title;
+	item.appendChild(img);
+	item.appendChild(inform);
+	point.appendChild(item);
+}
+
+//在point元素内加入能弹出modal框的图片，imgSrc为图片地址，title为model框标题
+function AddModalImg(imgSrc,title){
+	"use strict";
+	var img = document.createElement("img");
+	img.setAttribute("src",imgSrc);
+	ModalShow(img,imgSrc,title);
+	point.appendChild(img);
+}
+
+//加入弹出modal框的功能
+function ModalShow(element,imgSrc,title){
+	"use strict";
+	element.setAttribute("onclick","modalImg.src='"+imgSrc+"';modalTitle.innerHTML = '"+title+"';$('#"+modalIdRecord+"').modal('show');");	
+}
+</script>
+
+<!-- 瀑布流插件 -->
+<script type="text/javascript">
+	(function ( $ ) {
+
+		$.fn.mpmansory = function ( options ) {
+
+			var settings = $.extend({
+				childrenClass: '',
+				breakpoints: {
+						lg: 4,
+						md: 4,
+						sm: 6,
+						xs: 12
+				},
+				distributeBy: {
+					attr: 'data-order',
+					attrOrder: 'asc',
+					order: false,
+					height: false
+				},
+				onload: function ( items ) {
+					return true;
+				}
+
+			}, options);
+
+			Array.min = function( array ){
+				return Math.min.apply( Math, array );
+			};
+
+			$.emptyArray = function ( array ) {
+				for (var i = 0; i<array.length; i++) {
+					array[i].remove();
+				}
+
+				return new Array();
+			}
+
+			$.fn.initialize = function ( columns, classStr ) {
+				/*
+				 * @params [string] {classStr} - the bootstrap column string
+				 * @return [Array] - list of columns to create
+				 * @description - creates the grid columns in wich the items will be distributed
+				 */
+
+				var cols = [];
+
+				for (var i = 0; i<columns; i++) {
+
+					var wrap = $('<div></div>');
+					wrap.addClass(classStr);
+					$(this).append(wrap);
+					cols.push(wrap);
+
+				}
+
+				return cols;
+
+			}
+
+			$.fn.distributeItemsByHeight = function ( wrappers, items ) {
+				/*
+				 * @params [Array] {wrappers} - the array containing the columns elements
+				 * @params [Array] {items} - the array containing items
+				 * @description - distribute the items through the columns - to the columns with lowest height
+				 */
+				var counter = 0;
+
+				for (var k = 0; k<items.length; k++) {
+
+					var $heights = new Array();
+
+					for (var i = 0; i<wrappers.length; i++ ) {
+
+						//get the wrappers height
+
+						$heights.push(wrappers[i].height());
+
+					}
+
+					//get the wrapper with the lowest height
+					var min = Array.min($heights) == Number.POSITIVE_INFINITY || Array.min($heights) == Number.NEGATIVE_INFINITY ? 0 : Array.min($heights);
+					wrappers[$heights.indexOf(min)].append(items[k]);
+
+				}
+
+			}
+
+			$.fn.getCurrentColumnSize = function () {
+
+				if ($(window).width() > 1200) {
+					return 'lg';
+				} else if ($(window).width() > 992) {
+					return 'md';
+				} else if ($(window).width() > 720) {
+					return 'sm';
+				} else if ($(window).width() > 480) {
+					return 'xs';
+				} else if ($(window).width() > 320) {
+					return 'xs';
+				} else {
+					return 'xs';
+				}
+
+			}
+
+			$.fn.distributeItemsByOrder = function ( wrappers, items ) {
+				/*
+				 * @params [Array] {wrappers} - the array containing the columns elements
+				 * @params [Array] {items} - the array containing items
+				 * @description - distribute the items through the columns - to the columns with lowest height
+				 */
+				var counter = 0;
+
+				for (var k = 0; k<items.length; k++) {
+					if (counter == wrappers.length) counter = 0; 
+					wrappers[counter].append(items[k]);
+					counter++;
+				}
+
+			}
+
+			$.fn.orderItemsByAttr = function (items, order) {
+
+				var attrs = new Array();
+				for ( var k = 0; k<items.length; k++ ) {
+					attrs.push($(items[k]).attr(order.attr));
+				}
+
+				if  (order.attrOrder == 'asc') {
+					attrs.sort(function (a, b) { return a-b });
+				} else {
+					attrs.sort(function (a, b) { return b-a });
+				}
+
+				var ordered_items = new Array();
+
+				for ( var i = 0; i<attrs.length; i++) {
+					var item = $.grep(items, function (e) {return $(e).attr(order.attr) == attrs[i]});
+					ordered_items.push(item);
+				}
+				return ordered_items;
+			}
+
+			$.fn.distributeItemsByAttr = function ( wrappers, items, order) {
+
+				var counter = 0;
+				var counter2 = 0;
+
+				for (var i = 0; i<items.length; i++) {
+
+					if (counter == wrappers.length) counter = 0;
+					if ( items[i].length > 1) {
+						if (counter2 == items[i].length) counter2 = 0; 
+						wrappers[counter].append($(items[i][counter2]));
+						counter2++;
+					} else {
+						wrappers[counter].append($(items[i]));	
+					}
+					counter++;
+				}	
+			}
+
+			$.fn.apply = function ( settings, nrOfColumns, wrappers, items ) {
+
+				var _this = $(this);
+
+				var currentSize = _this.getCurrentColumnSize();
+
+				var columns = nrOfColumns; //find number of columns
+
+				//build the bootstrap class string
+				var classStr = "col-lg-" + settings.breakpoints.lg + " col-md-"+settings.breakpoints.md + " col-sm-" + settings.breakpoints.sm + " col-xs-" + settings.breakpoints.xs + " " + settings.columnClasses;
+
+				wrappers = $(this).initialize( columns, classStr ); //create columns'white
+
+				if ( settings.distributeBy.order ) {
+					_this.distributeItemsByOrder( wrappers, items); //apply mansory		
+				} else if ( settings.distributeBy.height ) {
+					_this.distributeItemsByHeight( wrappers, items); //apply mansory
+				} else if ( settings.distributeBy.attr ) {
+					_this.distributeItemsByAttr( wrappers, _this.orderItemsByAttr(items, settings.distributeBy), settings.distributeBy);
+				}
+				return { wrappers: wrappers, items: items };
+			}
+
+
+
+			return this.each(function () {
+
+				var _this = $(this);
+
+				var currentSize = _this.getCurrentColumnSize();
+
+				var numberOfColumns = 12 / settings.breakpoints[currentSize];
+
+				var items = _this.children( (settings.childrenClass != '' ? '.'+settings.childrenClass : 'div') );
+
+				var wrappers = new Array();
+
+				var returns = _this.apply( settings, numberOfColumns, wrappers, items );
+
+				wrappers = returns.wrappers;
+
+				$(window).on('resize', function ( e ) {
+
+					if (_this.getCurrentColumnSize() != currentSize ) {
+						numberOfColumns = 12 / settings.breakpoints[_this.getCurrentColumnSize()];
+						wrappers = $.emptyArray(wrappers);
+						returns = _this.apply( settings , numberOfColumns, wrappers, items);
+						wrappers = returns.wrappers;
+						currentSize = _this.getCurrentColumnSize();
+
+					}
+
+				});
+
+				if (settings.hasOwnProperty('onload')) {
+
+					//execute on load
+					settings.onload( items );
+
+				}
+
+			});
+		}
+
+	})(jQuery);
+</script>
+
 </head>
+<body style="
+background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578853646156&di=21c20b54ea75c602853f51a018aaf852&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fblog%2F201310%2F23%2F20131023134151_EEdSw.jpeg');
+background-repeat: no-repeat;
+background-attachment: fixed;"
+>
+
+<script type="text/javascript">PhoneTest()</script>
+
+<div class="container" style="background-color: rgba(255,255,255,0.9)">
+	<div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style=" width: 90%">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="Modal1Title">模态框（Modal）标题</h4>
+				</div>
+				<div class="modal-body imgWidthFit"><img src="#" id="Modal1Img"></div>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		SetModalID("Modal1","Modal1Img","Modal1Title");
+	</script>
+	
+	<hr>
+	<div class="row">
+		<div class="col-xs-6">
+			<h1><strong>求职简历</strong></h1>
+		</div>
+	</div>
+	<hr>
+	<div class="row well">
+		<div class="col-xs-12 col-md-2">
+			<div class="media">
+				<div class="media-left"> <a href="#"> <img src="http://i2.tiimg.com/707831/b7707be83ce8151b.jpg" alt="..." width="115" height="142" class="media-object img-rounded"> </a> </div>
+			</div>
+			<hr>
+		</div>
+		<div class="col-xs-8 basicInform">
+			<div class="row">
+				<div class="col-lg-6"> <span>姓名:</span>
+					<div class="info">罗轲</div>
+				</div>
+				<div class="col-lg-6"> <span>年龄:</span>
+					<div class="info">21岁</div>
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+				<div class="col-lg-6"> <span>手机:</span>
+					<div class="info">15575422560</div>
+				</div>
+				<div class="col-lg-6"> <span>邮箱:</span>
+					<div class="info">40901823@qq.com</div>
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+				<div class="col-lg-6"> <span>应聘职位:</span>
+					<div class="info">unity客户端工程师</div>
+				</div>
+				<div class="col-lg-6"> <span>求职地点:</span>
+					<div class="info">广州/深圳</div>
+				</div>
+				<div class="col-lg-6"> <span>期望薪资:</span>
+					<div class="info">6000以上/月</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div>
+		<h2><strong>自我评价</strong></h2>
+		<br>
+		<div class="row inner">
+			<table class="table table-striped">
+				<thead>
+				<tbody>
+					<tr>
+						<td class="tdHead"><span>专业背景</span></td>
+						<td><div class="info">3年数字媒体技术专业学习经历，成绩优异具备扎实的编程能力及完善的知识结构。</div></td>
+					</tr>
+					<tr>
+						<td class="tdHead"><span>开发实操</span></td>
+						<td><div class="info">热爱游戏行业，熟悉使用unity3D引擎，具备独立游戏开发项目经验，熟练使用c++等编程语言。</div></td>
+					</tr>
+					<tr>
+						<td class="tdHead"><span>美术审美</span></td>
+						<td><div class="info">具备基础美术功底及音画、文字相关知识，运用主流审美标准提出参考建议。</div></td>
+					</tr>
+					<tr>
+						<td class="tdHead"><span class="input-group-btn">学习能力</span></td>
+						<td><div class="info">保持学习主动性及敏锐度，关注前沿信息，学习主流软件及插件，不断更新技巧及方式。</div></td>
+					</tr>
+				</tbody>
+					</thead>
+
+			</table>
+		</div>
+	</div>
+	<hr>
+	<h2><strong>作品集合</strong></h2>
+	<hr>
+	<div class="well"> 
+		<script type="text/javascript">AddPan("https://pan.baidu.com/s/15ylGShsQ9eSwMrdZIqrH1g","0bo6","")</script> 
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-sm-8 col-lg-7">
+			<h2><strong>教育经历</strong></h2>
+			<hr>
+			<div class="row">
+				<div class="col-xs-6">
+					<h4>南华大学</h4>
+				</div>
+				<div class="col-xs-6">
+					<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2016.9 - 2020.6</h4>
+				</div>
+			</div>
+			<h4> <span class="label label-primary">数字媒体专业</span> <span class="label label-primary">本科生</span> </h4>
+			<div class="panel panel-default">
+				<div class = "panel-heading">
+					<h4>所学课程</h4>
+				</div>
+				<div class = "inner">
+					<div>
+						<div id="lessonForm1" class = "blockSpan blockHide"><span class="alwaysVis">高级语言程序设计</span><span>JAVA程序设计</span><span>数据库原理</span><span>操作系统</span><span>数据结构</span><span>数字逻辑</span><span>计算机网络原理</span><span>程序设计语言与编译</span><span>计算机科学导论</span><span>计算机组成原理</span>
+							<br class="hideElement">
+							<span class="alwaysVis">美术基础</span><span class="alwaysVis">设计美学</span><span>平面图像处理</span><span>动画原理与课程设计</span><span>数字图像处理</span><span>用户界面设计</span><span>数字影视基础</span><span>数字影视编导</span><span>数字音频技术</span><span class="alwaysVis">三维动画设计</span><span>E-learning</span><span>移动媒体游戏设计</span><span>静态网页开发</span><span class="alwaysVis">计算机游戏基础</span> 
+
+							<!--所学课程标签设置格式--> 
+							<script type="text/javascript">SpanStyle(" label label-success");</script> 
+							<span class="reverseVis btn btn-primary label label-primary glyphicon glyphicon-plus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span> <span class="btn btn-primary label label-primary glyphicon glyphicon-minus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span></div>
+					</div>
+				</div>
+				<div class = "panel-heading">
+					<h4>在校表现</h4>
+				</div>
+				<ul>
+					<br>
+					<li>在校期间，成绩优异，大三学习成绩排名本系前3名（共60人）</li>
+					<li>曾获得2018~2019年三好学生。</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-4 col-lg-4">
+			<h2><strong>技能列表</strong></h2>
+			<hr>
+			<div class="skillFrom">
+				<div class="pre-scrollable" style="max-height: 420px">
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%"> C++/C#/Java</div>
+						</div>
+						<div class="panel-body"> 掌握基本语法，能写出简单功能系统，有做注释的习惯
+							<hr>
+							常用IDE：visual studio 2017、eclipse </div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%"> U3D</div>
+						</div>
+						<div class="panel-body"> 掌握基础功能，有一定空间观念<br>
+							对于复杂模块，掌握使用效果、使用方式、注意事项即可上手 <br>
+							能阅读并修改一般的shader脚本 </div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%"> 自学/探究</div>
+						</div>
+						<div class="panel-body"> 掌握基础功能，有一定空间观念 <br>
+							对于复杂模块，掌握使用效果、使用方式、注意事项即可上手 <br>
+							能阅读并修改一般的shader脚本 </div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"> 视频剪辑</div>
+						</div>
+						<div class="panel-body"> 掌握Pr/Ae软件，但不算精通<br>
+							对画面语言有一定了解<br>
+							对调色节奏等基本规则有一定了解<br>
+							对音画配合技巧有一定了解<br>
+							为了解音乐传递的情感学过笛子，入门后因太吵改用钢琴模拟器<br>
+							仍有上升空间 </div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" style="width: 55%"> PS/Sai/AI/素描</div>
+						</div>
+						<div class="panel-body"> 掌握基础功能，有一定空间观念 <br>
+							对于复杂模块，掌握使用效果、使用方式、注意事项即可上手 <br>
+							能阅读并修改一般的shader脚本 </div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"> HTML</div>
+						</div>
+						<div class="panel-collapse panel-body collapsing"> 对Tag、属性、布局、层叠等有一定概念<br>
+							不常用</div>
+					</div>
+					<div class="skillBar">
+						<div class="progress">
+							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%"> 文字</div>
+						</div>
+						<div class="panel-body"> 有一定欣赏能力<br>
+							能在抓住主次的前提下写出还过得去的介绍 </div>
+					</div>
+					<!--技能列表设置格式--> 
+					<script type="text/javascript">	
+					var childsSkills =
+					//找寻skillBar
+					document.currentScript.parentElement.getElementsByTagName("*"); 
+					var SkillNum = 0;
+					for(var i=0;i<childsSkills.length;++i){
+						if(childsSkills[i].className.indexOf("skillBar")!=-1){
+							childsSkills[i].className+=" panel panel-default"
+							//准备设置id名
+							var idName = "skill"+ ++SkillNum;
+							var childs = childsSkills[i].getElementsByTagName("div");
+							for(var j=0;j<childs.length;++j){
+								if(childs[j].className.indexOf("progress")!=-1){
+									childs[j].setAttribute("data-toggle","collapse");
+									childs[j].setAttribute("data-target","#"+idName);
+								}
+								else if(childs[j].className.indexOf("panel-body")!=-1){
+									childs[j].id = idName;
+									//第一栏展开
+									if(SkillNum>1)
+										childs[j].className = "panel-collapse collapse";
+									else
+										childs[j].className = "panel-collapse collapse in";
+									var element = document.createElement("div");
+									element.className = "tips";
+									element.innerHTML = childs[j].innerHTML;
+									childs[j].innerHTML = "";
+									childs[j].appendChild(element);
+								}
+							}
+						}
+					}
+					</script> 
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row"></div>
+	<hr>
+	<h2><strong class="hoverDelete" data-toggle="tooltip" data-html="true" title="摸爬滚打记录">项目经验</strong></h2>
+	<hr>
+	<div class="row padding" id="galleryContainer1">
+		<div class="item">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>天黑请闭眼</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2017.02 - 2018.12 </h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<h4> <span class="label label-primary">学习用</span> <span class="label label-primary">课余活动</span> <span class="label label-primary">魔兽地图</span> <span class="label label-default hoverDelete" data-toggle="tooltip" title="黑历史">勇敢的尝试</span> </h4>
+					<hr>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>项目简介</a></li>
+					</ul>
+					<div class="inner">用课余时间尝试构建的一个休闲游戏，以便更好地了解游戏。</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab1Content1" data-toggle = "tab">制作步骤</a></li>
+						<li><a href="#tab1Content2" data-toggle = "tab">效果图</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab1Content1">
+							<br>
+							<ul>
+								<li>以天黑请闭眼的游戏模式为基础，构建好基础的游戏框架</li>
+								<li>在游戏中加入对话迷雾、跑图、
+									<div style="display: inline-block" data-toggle="tooltip" data-html="true" title="刷怪系统相对新手过于狂暴<br>导致这个休闲游戏变成了一个逃生游戏">狩猎</div>
+									、股票、随机商店、随机任务系统，充实每轮游戏的体验。</li>
+								<li>在游戏中加入单局成就排名系统，引入另一种意义的胜利者，减少玩家的挫败感。</li>
+								<li>在游戏中加入了刷钱购买道具让玩家获取个人胜利的线路，减少输家。</li>
+							</ul>
+						</div>
+						<div class="tab-pane fade" id="tab1Content2">
+						<div id="Carousel1" class="carousel slide" data-ride="carousel"> 
+							<!-- 轮播（Carousel）项目 -->
+							<div class="carousel-inner imgWidthFit" id="point1">
+							</div>
+							<!-- 轮播（Carousel）导航 --> 
+							<a class="left carousel-control" href="#Carousel1" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#Carousel1" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span> </a> </div>
+							<br>
+						</div>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>学习收获</a></li>
+					</ul>
+					<br>
+					<ul>
+						<li>增加了构造游戏系统的实战经验</li>
+						<li>了解到不同系统之间多样化的互相作用</li>
+						<li>加强了对游戏系统与游戏体验的理解</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="item">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>策划尝试</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2018.11 - 2018.12 </h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<h4> <span class="label label-primary">学习用</span> <span class="label label-primary">课余活动</span> <span class="label label-default">黑历史</span> </h4>
+					<hr>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>项目简介</a></li>
+					</ul>
+					<div class="inner">在游戏上做出的一次实践，由于人手和时间不够胎死腹中。</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab2Content1" data-toggle = "tab">策划文档</a></li>
+						<li data-toggle="tooltip" title="我有一个梦想系列"><a href="#tab2Content2" data-toggle = "tab">预期效果图</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab2Content1">
+							<div class="inner" id="point2"></div>
+						</div>
+						<div class="tab-pane fade" id="tab2Content2">
+							<div class="imgWidthFit" id="point3"></div>
+						</div>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>学习收获</a></li>
+					</ul>
+					<br>
+					<ul>
+						<li>增加了策划经验</li>
+						<li>增加了像素画经验</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="item">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>魔塔</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2019.7 - 2019.8</h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<h4> <span class="label label-primary">学习用</span> <span class="label label-primary">c++控制台游戏</span> </h4>
+					<hr>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>项目简介</a></li>
+					</ul>
+					<div class="inner">针对魔塔游戏，在控制台从零开始编写了一个系统，以便更好的了解游戏。</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab3Content1" data-toggle = "tab">制作步骤</a></li>
+						<li><a href="#tab3Content2" data-toggle = "tab">效果展示</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab3Content1"> <br>
+							<ul>
+								<li>划分了这个游戏中的各种系统,包括场景互动、道具、战斗、渲染等;清晰划分,在加入其它模块时得以仅修改小部分的模块； </li>
+								<li>使用双缓冲技术，加上高效的低级控制台写入函数的使用,游戏程序运行时画面得以达到基本流畅而不闪屏；</li>
+								<li>控制台显示了基础的界面,也加入了基础的声音,使游戏项目保持着相对的完整性。</li>
+							</ul>
+						</div>
+						<div class="tab-pane fade" id="tab3Content2"> <br>
+							<div class="inner" id="point4">
+							</div>
+							<br>
+						</div>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>学习收获</a></li>
+					</ul>
+					<br>
+					<ul>
+						<li>更为熟练地掌握已经学习的知识 </li>
+						<li>接触到一些实用的程序设计模式</li>
+						<li>纠正了一些写代码的习惯</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			SetCollapseID("coll",0,true)
+			AddClass("coll3"," in");
+		</script>
+		<!--因为瀑布流插件会因为<script>而罢工，出此下策-->
+		<!--添加第一个项目内的轮播图片-->
+		<script type="text/javascript">	
+			LocatePoint("point1");
+			AddModalImgItem("http://i2.tiimg.com/707831/0e48f0e5130b5fa6.png","选择英雄",true);
+			AddModalImgItem("http://i1.fuimg.com/707831/c7bb3a8f52c2f2a2.png","玩家菜单",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/602c618a67a6acb3.png","玩家基地",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/d895e3770835bb7f.png","种植",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/b6385adc42bf5e6b.png","种植",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/e09ad058d29dded7.png","用选择对象技能做的路灯",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/77c94b9b8f2a8730.png","柴火照明",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/b3634d6c430a450d.png","随机生成名字的、会说闲话的村民",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/8d6205d0954e0f35.png","会随机生成任务的村民",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/148d060858811ad8.png","会随机生成任务的村民",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/dd007817d5c8fd51.png","佣兵专属装备",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/7fe22b70d10c19b1.png","炒股",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/ca2990e212e8b2cf.png","会到别处扎根的商店",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/dafcc77b0834816d.png","一些奇奇怪怪的道具",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/58e02b6b0f2bf324.png","会缺水干死的英雄",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/b624361fe26a63a2.png","勾引怪物回家制造寄生虫挖矿的套路",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/502e6b2169365f85.png","勾引怪物回家制造寄生虫挖矿的套路",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/e09ad058d29dded7.png","用选择对象技能做的路灯",false);
+			AddModalImgItem("http://i1.fuimg.com/707831/96cc709ddf1e5c95.png","脱水死亡的随从",false);
+		</script>
+		<!--添加第二个项目内的百度盘-->
+		<script type="text/javascript">
+			PointPan("point2","https://pan.baidu.com/s/1xsuidGEcGUzxWpwnFv5MmA","lpax","inner")
+		</script> 
+		<!--添加第二个项目内的效果图-->
+		<script type="text/javascript">	
+			LocatePoint("point3");
+			AddModalImg("http://i2.tiimg.com/707831/f976504dd8eb33af.jpg","开始界面");
+			AddModalImg("http://i2.tiimg.com/707831/cceca819dc7320ab.jpg","战斗界面");
+			AddModalImg("http://i2.tiimg.com/707831/ab32c3f080b6ee85.jpg","菜单界面");
+		</script>
+		<!--添加第三个项目内的效果图-->
+		<script type="text/javascript">
+			LocatePoint("point4");
+			if(isPhone){
+				var but = document.createElement("button");
+				but.className = "btn btn-primary";
+				but.style = "cursor: default";	but.setAttribute("onclick","location.href='https://www.bilibili.com/video/av74191713?zw'");
+				but.innerHTML = "视频地址";
+				point.appendChild(but);
+			}
+			else{
+				point.innerHTML += " <div class='videoFull'><iframe src='//player.bilibili.com/player.html?aid=74191713&cid=126919685&page=1' scrolling='no' border='0' frameborder='no' framespacing='0' allowfullscreen='true'> </iframe></div>"
+			}
+		</script>
+	</div>
+	<hr>
+	<h2>游戏研究</h2>
+	<hr>
+	<div class="row padding" id="galleryContainer2">
+		<div class="galItem">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>王者荣耀</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 游戏时间：3年 </h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<ul class="nav nav-tabs">
+						<li class="active"><a>个人印象</a></li>
+					</ul>
+					<div class="inner blockSpan"> <span class="label label-info">moba</span> <span class="label label-info">国民游戏</span> </div>
+					<ul>
+						<li>具有一切moba游戏应有的特质。</li>
+						<li>局内体验主要为：竞争与合作、角色成长、随机性游戏进程、较快的节奏等</li>
+						<li>局外体验主要为：游戏技术随游戏进程增长带来的满足感、英雄及皮肤的收集等</li>
+						<li>进入市场的时间很早，加上初期游戏优化做得不错，占尽先机，甚至收割了不少中低端机型的用户</li>
+						<li>后期运营和迭代方面的成功稳住了用户群</li>
+					</ul>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>游戏进程</a></li>
+					</ul>
+					<div class="inner">最高星耀五</div>
+				</div>
+			</div>
+		</div>
+		<div class="galItem">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>元气骑士</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 游戏时间：1年 </h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<ul class="nav nav-tabs">
+						<li class="active"><a>个人印象</a></li>
+					</ul>
+					<div class="inner blockSpan"> <span class="label label-info">rougelike</span> <span class="label label-info">弹幕游戏</span> <span class="label label-info">像素风</span> </div>
+					<ul>
+						<li>没有开创特别的玩法，但游戏本身对细节的把控很好，本身也常出现带有小创意的更新。</li>
+						<li>雕像、武器配件等多系统同时作用于游戏进程，充实了游戏体验。</li>
+						<li>适当的游戏难度与样式多数量大的弹幕带给了游戏不错的观赏性，方便其在视频网站传播。</li>
+						<li>面对面联机除了满足玩家的社交要求，也保证了联机时的流畅度。</li>
+						<li>国内市场缺少同质量的同类游戏进行竞争。开发周期不长，维护成本与运营成本很低。回报率极高。</li>
+					</ul>
+					<ul class="nav nav-tabs">
+						<li class="active"><a>游戏进程</a></li>
+					</ul>
+					<div class="inner">吊炸天通关过；5元以下角色全通关</div>
+				</div>
+			</div>
+		</div>
+		<div class="galItem">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-5">
+							<h4>Undertale</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span> 云玩家 </h4>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<ul class="nav nav-tabs">
+						<li class="active"><a>个人印象</a></li>
+					</ul>
+					<div class="inner blockSpan"> <span class="label label-info">rpg</span> <span class="label label-info">剧情</span> <span class="label label-info">低成本神作</span> </div>
+					<ul>
+						<li>属于艺术品范畴。</li>
+						<li>剧情完成度高，三类剧情线能满足剧情玩家需求。</li>
+						<li>操作偏硬核，可选择难度，战斗流程不一，可满足追求操作性的玩家。</li>
+						<li>画风粗糙，但这也为玩家们的二次创作留下了余地</li>
+						<li>对游戏人物们有着细心的雕琢。通过各个角色不同的关卡风格，专属音乐、台词风格以塑造人物，却也留给了玩家进行二次创作的余地。</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="galItem hideSide">
+			<div id="Carousel2" class="carousel slide" data-interval="false"> 
+				<!-- 轮播（Carousel）项目 -->
+				<div class="carousel-inner">
+					<div class="item active">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-5">
+										<h4>星界边境</h4>
+									</div>
+									<div class="col-xs-5">
+										<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 游戏时间：3年 </h4>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<ul class="nav nav-tabs">
+									<li class="active"><a>个人印象</a></li>
+								</ul>
+								<div class="inner blockSpan"> <span class="label label-info">rpg</span> <span class="label label-info">像素风</span> <span class="label label-info">沙盒</span> </div>
+								<ul>
+									<li>游戏给人的感觉像是一款像素风的太空人模拟器</li>
+									<li>配有相当多的系统系统，包括种植养殖、行商、载具、机甲、建筑、战斗、随从等等……</li>
+									<li>各个系统开发得不够彻底，系统之间相互的加成的效果也不够强，没能带给玩家特别精彩的体验。</li>
+								</ul>
+								<ul class="nav nav-tabs">
+									<li class="active"><a>游戏进程</a></li>
+								</ul>
+								<div class="inner">通关；在母星建造了一个小基地。</div>
+							</div>
+						</div>
+					</div>
+					<div class="item">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-5">
+										<h4><span class="glyphicon glyphicon-ok-sign"></span>KAG Alpha</h4>
+									</div>
+									<div class="col-xs-5">
+										<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 游戏时间：2年 </h4>
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<ul class="nav nav-tabs">
+									<li class="active"><a>个人印象</a></li>
+								</ul>
+								<div class="inner blockSpan"> <span class="label label-info">竞技</span> <span class="label label-info">像素风</span> <span class="label label-info">沙盒</span> </div>
+								<ul>
+									<li>角色不多，画风简陋</li>
+									<li>系统不多，但都具有让开发玩法的潜力。</li>
+									<li>支持30人以上的联机，将角色简单的短板用数量弥补了起来。</li>
+									<li>有着可自定义的2D地图，构成地图的图块也各有各的功能特色，使地图系统能得到活用。</li>
+								</ul>
+								<ul class="nav nav-tabs">
+									<li class="active"><a>游戏进程</a></li>
+								</ul>
+								<div class="inner">开设过自己的服务器</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 轮播（Carousel）导航 --> 
+				<a class="left carousel-control" href="#Carousel2" role="button" data-slide="prev"> <span class="sr-only">Previous</span> </a> <a class="right carousel-control" href="#Carousel2" role="button" data-slide="next"> <span class="sr-only">Next</span> </a> </div>
+		</div>
+		<script type="text/javascript">SetCollapseID("coll",3,false)</script> 
+	</div>
+	<hr>
+	<h2>奖项证书</h2>
+	<hr>
+	<div class="well">CET四级</div>
+	<div class="well">2018~2019年三好学生并获得校一等奖学金</div>
+	<div class="well">2018年大学生计算机设计大赛三等奖</div>
+	<div class="well">2019年大学生计算机设计大赛三等奖</div>
+	<hr>
+	
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3>如有意向请与我联系
+		<div class="pull-right" style="display: inline;">
+			<script type="text/javascript">
+				var icon = document.createElement("img");
+				icon.style = "height:32px;margin: 5px;cursor:pointer;"
+				icon.setAttribute("src","https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3453829545,1654748214&fm=179&app=42&f=JPEG?w=56&h=56&s=2346985E4576FF32E654825E03004077");
+				ModalShow(icon,"http://i1.fuimg.com/707831/4cbda38f3a7500a1.jpg","微信二维码");
+				document.currentScript.parentElement.appendChild(icon);
+			</script>
+		</div>
+		</h3>
+	</div>
+</div>
+</div>
+
+	
+<!--启用工具提示--> 
+<script type="text/javascript">
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+</script> 
+
+<!--启用瀑布流--> 
+<script type="text/javascript">
+	jQuery(document).ready(function ( $ ) {
+		$("#galleryContainer1").mpmansory(
+		{
+		  childrenClass: '', // default is a div
+		  columnClasses: '', //add classes to items
+		  breakpoints:{
+			lg: 6, 
+			md: 6, 
+			sm: 12,
+			xs: 12
+		  },
+		  distributeBy: { order: false, height: false, attr: 'data-order', attrOrder: 'asc' }, 
+		  onload: function (items) {
+			//make somthing with items
+		  } 
+		}
+	  );
+	});
+</script> 
+
+<!--启用瀑布流--> 
+<script type="text/javascript">
+	jQuery(document).ready(function ( $ ) {
+		$("#galleryContainer2").mpmansory(
+		{
+		  childrenClass: 'galItem', // default is a div
+		  columnClasses: '', //add classes to items
+		  breakpoints:{
+			lg: 6, 
+			md: 6, 
+			sm: 12,
+			xs: 12
+		  },
+		  distributeBy: { order: false, height: false, attr: 'data-order', attrOrder: 'asc' }, 
+		  onload: function (items) {
+			//make somthing with items
+		  } 
+		}
+	  );
+	});
+</script>
+</body>
 </html>
