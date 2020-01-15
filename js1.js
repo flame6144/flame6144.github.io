@@ -225,6 +225,9 @@ function popModal(imgSrc,title){
 		modalImg.className = "";
 		ImgAmplifiable = true;
 	}
+	else{
+		ImgAmplifiable = false;
+	}
 	modalTitle.innerHTML = title;
 	$(modalID).modal('show');
 }
