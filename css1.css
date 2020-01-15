@@ -5,9 +5,9 @@
 	margin: 5px;
 	width: 100%;
 }
-.imgHeightFit img{
-	margin: 5px;
-	height: 100%;
+
+.imgWidthFit img.notfit{
+	width: auto;
 }
 
 span{
@@ -39,7 +39,7 @@ span{
 	display: none;
 }
 
-.skillFrom .pre-scrollable::-webkit-scrollbar {
+.hideScrollBar::-webkit-scrollbar {
 	width: 0px;
 }
 
@@ -71,7 +71,7 @@ span{
 
 .basicInform .info{
 	display: inline-block;
-	font-family: '寰蒋闆呴粦';
+	font-family: '微软雅黑';
 	font-size: 18px;
 	white-space: nowrap;
 	line-height: 18px;
@@ -134,4 +134,10 @@ span{
 .hideWord:hover{
 	display: inline;
 	color: black;
+}
+
+.headLine{
+	background: white;
+	border: thick;
+	padding-left: 20px;
 }
