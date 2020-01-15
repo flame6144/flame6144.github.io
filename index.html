@@ -12,9 +12,9 @@
 <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <!-- Other -->
-<link href="css1.css" rel="stylesheet">
-<script src="js1.js"></script>
-<script src="mp.mansory.js"></script>
+<link href="other/css1.css" rel="stylesheet">
+<script src="other/js1.js"></script>
+<script src="other/mp.mansory.min.js"></script>
 </head>
 <body style="
 background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578853646156&di=21c20b54ea75c602853f51a018aaf852&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fblog%2F201310%2F23%2F20131023134151_EEdSw.jpeg');
@@ -24,6 +24,34 @@ background-attachment: fixed;"
 
 <script type="text/javascript">PhoneTest()</script>
 
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="topNavBar">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">求职简历</a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#headNav">
+				<span class="sr-only">切换导航</span>
+			</button>
+		</div>
+		<div class = "collapse navbar-collapse" id="headNav">
+			<ul class="nav navbar-nav">
+				<li><a href="#head1">基本资料</a></li>
+				<li><a href="#head2">自我评价</a></li>
+				<li><a href="#head3">作品集合</a></li>
+				<li><a href="#head4">教育经历</a></li>
+				<li><a href="#head5">技能列表</a></li>
+				<li><a href="#head6">游戏研究</a></li>
+				<li><a href="#head7">奖项证书</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script type="text/javascript">
+	connectNav("topNavBar");
+	onResize();
+</script>
+
 <div class="container" style="background-color: rgba(255,255,255,0.9)">
 	<div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" style=" width: 90%">
@@ -32,18 +60,21 @@ background-attachment: fixed;"
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="Modal1Title">模态框（Modal）标题</h4>
 				</div>
-				<div class="modal-body imgWidthFit"><img src="#" id="Modal1Img"></div>
+				<div class="modal-body imgWidthFit">
+					<div id="modal1Inner" style="overflow-x: auto;">
+						<center><img src="#" id="Modal1Img" onClick="ModalImageAmplify();"></center>
+					</div>
+				</div>
 				<div class="modal-footer">
 				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
-		SetModalID("Modal1","Modal1Img","Modal1Title");
+		SetModalID("Modal1","modal1Inner","Modal1Img","Modal1Title");
 	</script>
 	
-	<hr>
-	<div class="row">
+	<div class="row headLine" id="head1">
 		<div class="col-xs-6">
 			<h1><strong>求职简历</strong></h1>
 		</div>
@@ -83,14 +114,16 @@ background-attachment: fixed;"
 					<div class="info">广州/深圳</div>
 				</div>
 				<div class="col-lg-6"> <span>期望薪资:</span>
-					<div class="info">6000以上/月</div>
+					<div class="info">7500以上/月</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<hr>
-	<div>
+	<div class="row headLine" id="head2">
 		<h2><strong>自我评价</strong></h2>
+	</div>
+	<div>
 		<br>
 		<div class="row inner">
 			<table class="table table-striped">
@@ -119,56 +152,67 @@ background-attachment: fixed;"
 		</div>
 	</div>
 	<hr>
-	<h2><strong>作品集合</strong></h2>
+	<div class="row headLine" id="head3">
+		<h2><strong>作品集合</strong></h2>
+	</div>
 	<hr>
 	<div class="well"> 
 		<script type="text/javascript">AddPan("https://pan.baidu.com/s/15ylGShsQ9eSwMrdZIqrH1g","0bo6","")</script> 
 	</div>
 	<div class="row">
-		<div class="col-sm-8 col-lg-7">
-			<hr>
-			<h2><strong>教育经历</strong></h2>
-			<hr>
-			<div class="row">
-				<div class="col-xs-6">
-					<h4>南华大学</h4>
-				</div>
-				<div class="col-xs-6">
-					<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2016.9 - 2020.6</h4>
-				</div>
+		<div class="col-sm-12 col-md-8 col-lg-7">
+			<div class="row headLine" id="head4">
+				<h2><strong>教育经历</strong></h2>
 			</div>
-			<h4> <span class="label label-primary">数字媒体专业</span> <span class="label label-primary">本科生</span> </h4>
+			<hr>
 			<div class="panel panel-default">
 				<div class = "panel-heading">
-					<h4>所学课程</h4>
-				</div>
-				<div class = "inner">
-					<div>
-						<div id="lessonForm1" class = "blockSpan blockHide"><span class="alwaysVis">高级语言程序设计</span><span>JAVA程序设计</span><span>数据库原理</span><span>操作系统</span><span>数据结构</span><span>数字逻辑</span><span>计算机网络原理</span><span>程序设计语言与编译</span><span>计算机科学导论</span><span>计算机组成原理</span>
-							<br class="hideElement">
-							<span class="alwaysVis">美术基础</span><span class="alwaysVis">设计美学</span><span>平面图像处理</span><span>动画原理与课程设计</span><span>数字图像处理</span><span>用户界面设计</span><span>数字影视基础</span><span>数字影视编导</span><span>数字音频技术</span><span class="alwaysVis">三维动画设计</span><span>E-learning</span><span>移动媒体游戏设计</span><span>静态网页开发</span><span class="alwaysVis">计算机游戏基础</span> 
-
-							<!--所学课程标签设置格式--> 
-							<script type="text/javascript">SpanStyle(" label label-success");</script> 
-							<span class="reverseVis btn btn-primary label label-primary glyphicon glyphicon-plus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span> <span class="btn btn-primary label label-primary glyphicon glyphicon-minus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span></div>
+					<div class="row">
+						<div class="col-xs-6">
+							<h4>南华大学</h4>
+						</div>
+						<div class="col-xs-6">
+							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2016.9 - 2020.6</h4>
+						</div>
 					</div>
 				</div>
-				<div class = "panel-heading">
-					<h4>在校表现</h4>
+				<div class="panel-body">
+					<h4> <span class="label label-primary">数字媒体专业</span> <span class="label label-primary">本科生</span> </h4>
+					<div class="panel panel-default">
+						<div class = "panel-heading">
+							<h4>所学课程</h4>
+						</div>
+						<div class = "inner">
+							<div>
+								<div id="lessonForm1" class = "blockSpan blockHide"><span class="alwaysVis">高级语言程序设计</span><span>JAVA程序设计</span><span>数据库原理</span><span>操作系统</span><span>数据结构</span><span>数字逻辑</span><span>计算机网络原理</span><span>程序设计语言与编译</span><span>计算机科学导论</span><span>计算机组成原理</span>
+									<br class="hideElement">
+									<span class="alwaysVis">美术基础</span><span class="alwaysVis">设计美学</span><span>平面图像处理</span><span>动画原理与课程设计</span><span>数字图像处理</span><span>用户界面设计</span><span>数字影视基础</span><span>数字影视编导</span><span>数字音频技术</span><span class="alwaysVis">三维动画设计</span><span>E-learning</span><span>移动媒体游戏设计</span><span>静态网页开发</span><span class="alwaysVis">计算机游戏基础</span> 
+
+									<!--所学课程标签设置格式--> 
+									<script type="text/javascript">SpanStyle(" label label-success");</script> 
+									<span class="reverseVis btn btn-primary label label-primary glyphicon glyphicon-plus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span> <span class="btn btn-primary label label-primary glyphicon glyphicon-minus" style="cursor:pointer" onClick="SwitchClass('lessonForm1','blockHide');"> </span></div>
+							</div>
+						</div>
+						<div class = "panel-heading">
+							<h4>在校表现</h4>
+						</div>
+						<ul>
+							<br>
+							<li>在校期间，成绩优异，大三学习成绩排名本系前3名（共60人）</li>
+							<li>曾获得2018~2019年三好学生。</li>
+						</ul>
+					</div>
 				</div>
-				<ul>
-					<br>
-					<li>在校期间，成绩优异，大三学习成绩排名本系前3名（共60人）</li>
-					<li>曾获得2018~2019年三好学生。</li>
-				</ul>
 			</div>
-		</div>
-		<div class="col-sm-4 col-lg-4">
 			<hr>
-			<h2><strong>技能列表</strong></h2>
+		</div>
+		<div class="col-sm-12 col-md-4 col-lg-5">
+			<div class="row headLine" id="head5">
+				<h2><strong>技能列表</strong></h2>
+			</div>
 			<hr>
 			<div class="skillFrom">
-				<div class="pre-scrollable" style="max-height: 420px">
+				<div class="pre-scrollable hideScrollBar" style="max-height: 420px">
 					<div class="skillBar">
 						<div class="progress">
 							<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%"> C++/C#/Java</div>
@@ -271,17 +315,19 @@ background-attachment: fixed;"
 	</div>
 	<div class="row"></div>
 	<hr>
-	<h2><strong class="hoverDelete" data-toggle="tooltip" data-html="true" title="摸爬滚打记录">项目经验</strong></h2>
+	<div class="row headLine" id="head6">
+		<h2><strong class="hoverDelete" data-toggle="tooltip" data-html="true" title="摸爬滚打记录">项目经验</strong></h2>
+	</div>
 	<hr>
 	<div class="row padding" id="galleryContainer1">
 		<div class="item">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-xs-5">
+						<div class="col-xs-4">
 							<h4>天黑请闭眼</h4>
 						</div>
-						<div class="col-xs-5">
+						<div class="col-xs-8">
 							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2017.02 - 2018.12 </h4>
 						</div>
 					</div>
@@ -335,10 +381,10 @@ background-attachment: fixed;"
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-xs-5">
+						<div class="col-xs-4">
 							<h4>策划尝试</h4>
 						</div>
-						<div class="col-xs-5">
+						<div class="col-xs-8">
 							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2018.11 - 2018.12 </h4>
 						</div>
 					</div>
@@ -377,10 +423,10 @@ background-attachment: fixed;"
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-xs-5">
+						<div class="col-xs-4">
 							<h4>魔塔</h4>
 						</div>
-						<div class="col-xs-5">
+						<div class="col-xs-8">
 							<h4 class="text-right"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> 2019.7 - 2019.8</h4>
 						</div>
 					</div>
@@ -476,7 +522,9 @@ background-attachment: fixed;"
 		</script>
 	</div>
 	<hr>
-	<h2>游戏研究</h2>
+	<div class="row headLine" id="head7">
+		<h2><strong>游戏研究</strong></h2>
+	</div>
 	<hr>
 	<div class="row padding" id="galleryContainer2">
 		<div class="galItem">
@@ -638,17 +686,18 @@ background-attachment: fixed;"
 		<script type="text/javascript">SetCollapseID("coll",3,false)</script> 
 	</div>
 	<hr>
-	<h2>奖项证书</h2>
+	<div class="row headLine">
+		<h2><strong>奖项证书</strong></h2>
+	</div>
 	<hr>
 	<div class="well">CET四级</div>
 	<div class="well">2018~2019年三好学生并获得校一等奖学金</div>
 	<div class="well">2018年大学生计算机设计大赛三等奖</div>
 	<div class="well">2019年大学生计算机设计大赛三等奖</div>
 	<hr>
-	
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h3>如有意向请与我联系
+
+	<div class="row" style="background-color: white">
+		<h3 style="margin-left: 10px;"><strong>如有意向请与我联系</strong>
 		<div class="pull-right" style="display: inline;">
 			<script type="text/javascript">
 				var icon = document.createElement("img");
@@ -661,8 +710,6 @@ background-attachment: fixed;"
 		</h3>
 	</div>
 </div>
-</div>
-
 	
 <!--启用工具提示--> 
 <script type="text/javascript">
