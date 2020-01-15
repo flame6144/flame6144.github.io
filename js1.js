@@ -152,15 +152,21 @@ function PhoneTest(){
 
 //放大图片的弹出框的id
 var modalIdRecord;
+//图片内元素的id
+var modalInnerIdRecord;
 //放大图片的弹出框内显示大图的Img
 var modalImg;
+//放大图片的弹出框内显示大图的Img
+var modalImgIdRecord;
 //大图的标题
 var modalTitle;
 
 //设置放大图片的弹出框的ID名
-function SetModalID(modalId,modalImgId,modalTitleId){
+function SetModalID(modalId,modalInnerId,modalImgId,modalTitleId){
 	"use strict";
 	modalIdRecord = modalId;
+	modalInnerIdRecord = modalInnerId;
+	modalImgIdRecord = modalImgId;
 	modalImg = document.getElementById(modalImgId);
 	modalTitle = document.getElementById(modalTitleId);
 }
@@ -203,5 +209,46 @@ function AddModalImg(imgSrc,title){
 //加入弹出modal框的功能
 function ModalShow(element,imgSrc,title){
 	"use strict";
-	element.setAttribute("onclick","modalImg.src='"+imgSrc+"';modalTitle.innerHTML = '"+title+"';$('#"+modalIdRecord+"').modal('show');");	
+	element.setAttribute("onclick","popModal('"+imgSrc+"','"+title+"');");	
+}
+
+//modal框内图片能否放大
+var ImgAmplifiable = false;
+
+//弹出modal框
+function popModal(imgSrc,title){
+	"use strict";
+	var modalID = '#'+modalIdRecord;
+	modalImg.className = "notfit";
+	modalImg.setAttribute("src",imgSrc);
+	if(modalImg.width>$(modalID).width()){
+		modalImg.className = "";
+		ImgAmplifiable = true;
+	}
+	modalTitle.innerHTML = title;
+	$(modalID).modal('show');
+}
+
+//放大modal框内图片
+function ModalImageAmplify(){
+	"use strict";
+	if(ImgAmplifiable){
+		SwitchClass(modalImgIdRecord,"notfit");
+	}
+}
+
+//顶部导航栏id
+var topNavId;
+
+//连接id为idName的变量，方便改body顶边距
+function connectNav(idName){
+	"use strict";
+	topNavId = idName;
+	$(window).resize(onResize);
+}
+
+//修改顶边距
+function onResize(){
+	"use strict";
+	$("body").css("padding-Top", document.getElementById(topNavId).offsetHeight);
 }
