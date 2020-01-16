@@ -226,6 +226,7 @@ function popModal(imgSrc,title){
 		ImgAmplifiable = true;
 	}
 	else{
+		modalImg.className = "notfit";
 		ImgAmplifiable = false;
 	}
 	modalTitle.innerHTML = title;
