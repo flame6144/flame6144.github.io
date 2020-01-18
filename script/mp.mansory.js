@@ -1,4 +1,4 @@
-	//来自不知名大佬的瀑布流插件
+//来自不知名大佬的瀑布流插件
   (function ( $ ) {
 
 		$.fn.mpmansory = function ( options ) {
