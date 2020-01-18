@@ -187,6 +187,7 @@ function AddModalImgItem(imgSrc,title,active){
 	item.className = active?"item active":"item";
 	var img = document.createElement("img");
 	img.setAttribute("src",imgSrc);
+	img.setAttribute("alt","waitting");
 	img.className = "clickable";
 	ModalShow(img,imgSrc,title);
 	var inform = document.createElement("div");
